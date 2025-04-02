@@ -1,0 +1,51 @@
+<FluentStack Orientation="Orientation.Vertical">
+  <FluentDialogHeader Visible="false"/>
+  <FluentDialogBody>
+    <div class="data-grid-container">
+      <FluentDataGrid Items=@FilteredItems
+                      Virtualize="true"
+                      Style="width: 100%;" 
+                      ItemSize="40"
+                      DisplayMode="DataGridDisplayMode.Table"
+                      RowClass="@GetRowClass"
+                      GenerateHeader="@GenerateHeaderOption.Sticky"
+                      TGridItem="TimeLanguagePageViewModel.CultureDataItem"
+                      ShowHover="true"
+                      OnRowClick="@HandleRowFocus">
+      <ChildContent>
+          <PropertyColumn Property="@(c => c.DisplayName)"
+                          Title="Name"
+                          Sortable="true" 
+                          SortBy="@CultureSort"
+                          Comparer="@StringLengthComparer.Instance"
+                          Filtered="!string.IsNullOrWhiteSpace(m_NameFilter)">
+            <ColumnOptions>
+              <div class="search-box">
+                <FluentSearch type="search"
+                              Autofocus=true
+                              @bind-Value="m_NameFilter"
+                              @oninput="HandleCountryFilter"
+                              @bind-Value:after="HandleClear"
+                              Placeholder="Culture name..." />
+              </div>
+            </ColumnOptions>
+          </PropertyColumn>
+      </ChildContent>
+      <EmptyContent>
+        <FluentIcon Value="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Filled.Size24.BookSearch())" 
+                    Color="@Color.Accent" />
+          &nbsp; No data
+      </EmptyContent>
+    </FluentDataGrid>
+    </div>
+  </FluentDialogBody>
+  <FluentDialogFooter>
+    <FluentStack Class="footer-content"
+                 Orientation="Orientation.Horizontal"
+                 HorizontalAlignment="HorizontalAlignment.Center"
+                 VerticalAlignment="VerticalAlignment.Center">
+      <FluentButton Appearance="Appearance.Accent" OnClick=SaveAsync>Save</FluentButton>
+      <FluentButton Appearance="Appearance.Neutral" OnClick=CancelAsync>Cancel</FluentButton>
+    </FluentStack>
+  </FluentDialogFooter>
+</FluentStack>

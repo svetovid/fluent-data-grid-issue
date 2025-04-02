@@ -1,0 +1,46 @@
+@page "/"
+@rendermode InteractiveServer
+
+@layout MainLayout
+@inherits MvvmComponentBase<TimeLanguagePageViewModel>
+
+@if (!ViewModel.IsLoading && ViewModel.CurrentRegionSettingModel != null)
+{
+  <FluentStack Orientation="Orientation.Vertical">
+    <FluentCard Height="25%" AreaRestricted="false">
+      <FluentAccordion>
+        <FluentAccordionItem>
+          <HeadingTemplate>
+            <FluentStack Orientation="Orientation.Horizontal">
+              <FluentIcon Value="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size24.AccessTime())"
+                          Color="Color.Neutral"
+                          Slot="start"
+                          Width="24px" />
+              <FluentLabel Typo="Typography.H3">Regional format</FluentLabel>
+              <div slot="end">
+                <FluentLabel>@CurrentCultureDisplayName</FluentLabel>
+              </div>
+            </FluentStack>
+          </HeadingTemplate>
+          <ChildContent>
+            <FluentStack Orientation="Orientation.Vertical">
+              <FluentStack Orientation="Orientation.Horizontal">
+                <FluentButton OnClick="@ShowAllRegionalFormatsAsync">
+                  Change format
+                </FluentButton>
+              </FluentStack>
+              <FluentDivider Orientation=Orientation.Horizontal Role="DividerRole.Separator"></FluentDivider>
+              <FluentDataGrid GenerateHeader="GenerateHeaderOption.None"
+                              Items="@ViewModel.RegionalFormatData"
+                              TGridItem="TimeLanguagePageViewModel.RegionalFormatDataItem"
+                              RowSize="DataGridRowSize.Smaller">
+                <PropertyColumn Property="@(p => p.Name)" />
+                <PropertyColumn Property="@(p => p.Value)" />
+              </FluentDataGrid>
+            </FluentStack>
+          </ChildContent>
+        </FluentAccordionItem>
+      </FluentAccordion>
+    </FluentCard>
+  </FluentStack>
+}
